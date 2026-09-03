@@ -76,7 +76,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
 
     if (data.length === 0) {
       e.preventDefault();
-      toast.error("Items not added!!");
+      toast.error("The products haven't been added yet!!");
       return;
     }
 
@@ -86,7 +86,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
 
     if (!subcategory) {
       e.preventDefault();
-      toast.error("Items not added!!");
+      toast.error("The products haven't been added yet!!");
       return;
     }
   };
