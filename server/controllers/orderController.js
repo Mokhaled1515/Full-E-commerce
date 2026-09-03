@@ -36,7 +36,7 @@ export async function CashOnDeliveryOrderController(req, res) {
 
     const updateInUser = await UserModel.updateOne(
       { _id: userId },
-      { shopping_cart: [] }
+      { shopping_cart: [] },
     );
 
     return res.json({
@@ -117,90 +117,125 @@ export async function paymentController(req, res) {
 
 // valid -->  stripe listen --forward-to localhost:8080/api/order/webhook
 
-const getOrderProductItems = async({lineItems,userId,addressId,paymentId,payment_status})=>{
-    const productList = []
+const getOrderProductItems = async ({
+  lineItems,
+  userId,
+  addressId,
+  paymentId,
+  payment_status,
+}) => {
+  const productList = [];
 
-    if(lineItems?.data?.length){
-        for(const item of lineItems.data){
-            const product = await Stripe.products.retrieve(item.price.product)
+  if (lineItems?.data?.length) {
+    for (const item of lineItems.data) {
+      const product = await Stripe.products.retrieve(item.price.product);
 
-            const paylod = {
-                userId : userId,
-                orderId : `ORD-${new mongoose.Types.ObjectId()}`,
-                productId : product.metadata.productId, 
-                product_details : {
-                    name : product.name,
-                    image : product.images
-                } ,
-                paymentId : paymentId,
-                payment_status : payment_status,
-                delivery_address : addressId,
-                subTotalAmt  : Number(item.amount_total / 100),
-                totalAmt  :  Number(item.amount_total / 100),
-            }
+      const paylod = {
+        userId: userId,
+        orderId: `ORD-${new mongoose.Types.ObjectId()}`,
+        productId: product.metadata.productId,
+        product_details: {
+          name: product.name,
+          image: product.images,
+        },
+        paymentId: paymentId,
+        payment_status: payment_status,
+        delivery_address: addressId,
+        subTotalAmt: Number(item.amount_total / 100),
+        totalAmt: Number(item.amount_total / 100),
+      };
 
-            productList.push(paylod)
-        }
+      productList.push(paylod);
     }
+  }
 
-    return productList
-}
+  return productList;
+};
 
-export async function webhookStripe(request,response){
-    const event = request.body;
-    const endPointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY
+export async function webhookStripe(request, response) {
+  const event = request.body;
+  const endPointSecret = process.env.STRIPE_ENDPOINT_WEBHOOK_SECRET_KEY;
 
-    console.log("event",event)
+  console.log("event", event);
 
-    // Handle the event
+  // Handle the event
   switch (event.type) {
-    case 'checkout.session.completed':
+    case "checkout.session.completed":
       const session = event.data.object;
-      const lineItems = await Stripe.checkout.sessions.listLineItems(session.id)
-      const userId = session.metadata.userId
-      const orderProduct = await getOrderProductItems(
-        {
-            lineItems : lineItems,
-            userId : userId,
-            addressId : session.metadata.addressId,
-            paymentId  : session.payment_intent,
-            payment_status : session.payment_status,
-        })
-    
-      const order = await OrderModel.insertMany(orderProduct)
+      const lineItems = await Stripe.checkout.sessions.listLineItems(
+        session.id,
+      );
+      const userId = session.metadata.userId;
+      const orderProduct = await getOrderProductItems({
+        lineItems: lineItems,
+        userId: userId,
+        addressId: session.metadata.addressId,
+        paymentId: session.payment_intent,
+        payment_status: session.payment_status,
+      });
 
-        console.log(order)
-        if(Boolean(order[0])){
-            const removeCartItems = await UserModel.findByIdAndUpdate(userId,{
-                shopping_cart : []
-            })
-            const removeCartProductDB = await CartProductModel.deleteMany({ userId : userId})
-        }
+      const order = await OrderModel.insertMany(orderProduct);
+
+      console.log(order);
+      if (Boolean(order[0])) {
+        const removeCartItems = await UserModel.findByIdAndUpdate(userId, {
+          shopping_cart: [],
+        });
+        const removeCartProductDB = await CartProductModel.deleteMany({
+          userId: userId,
+        });
+      }
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
 
   // Return a response to acknowledge receipt of the event
-  response.json({received: true});
+  response.json({ received: true });
 }
 
-export async function getOrderDetailsController(req,res){
+export async function getOrderDetailsController(req, res) {
   try {
-    const userId = req.userId
-    const orderlist = await OrderModel.find({ userId : userId}).sort({ createdAt : -1}).populate('delivery_address')
+    const userId = req.userId;
+    const orderlist = await OrderModel.find({ userId: userId })
+      .sort({ createdAt: -1 })
+      .populate("delivery_address");
 
     return res.json({
-      message : "order list",
+      message: "order list",
       data: orderlist,
       error: false,
-      success: true
-    })
+      success: true,
+    });
   } catch (error) {
-   return res.status(500).json({
-    message : error.message || error,
-    error: true,
-    success: false
-   })
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
+
+
+
+export async function getAllOrdersController(req, res) {
+  try {
+    const orders = await OrderModel.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "name email mobile")
+      .populate("delivery_address");
+
+    return res.json({
+      message: "All orders",
+      data: orders,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
   }
 }

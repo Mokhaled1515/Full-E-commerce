@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import OrderAdmin from "../pages/OrderAdmin";
+
 import Home from "../pages/Home";
 import SearchPage from "../pages/SearchPage";
 import ErrorPage from "../pages/ErrorPage";
@@ -108,6 +110,14 @@ const router = createBrowserRouter([
             element: (
               <Adminpermission>
                 <ProductAdmin />
+              </Adminpermission>
+            ),
+          },
+          {
+            path: "orders",
+            element: (
+              <Adminpermission>
+                <OrderAdmin />
               </Adminpermission>
             ),
           },
