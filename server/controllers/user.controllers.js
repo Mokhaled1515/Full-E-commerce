@@ -1,4 +1,4 @@
-import sendEmail from "../config/sendemail.js";
+import sendEmail from "../config/sendEmail.js";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/user.models.js";
 import bcryptjs from "bcryptjs";
