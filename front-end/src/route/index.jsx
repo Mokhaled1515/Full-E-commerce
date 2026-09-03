@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 import SearchPage from "../pages/SearchPage";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import ForgotPassword from "../pages/forgotPassword";
+import ForgotPassword from "../pages/ForgotPassword";
 import OtpVerify from "../pages/OtpVerify";
 import ResetPassword from "../pages/ResetPassword";
 import UserMenuMobile from "../pages/UserMenuMobile";
