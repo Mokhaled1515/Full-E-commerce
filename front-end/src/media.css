@@ -1,0 +1,34 @@
+@media (min-width:200px) and (max-width: 340px) {
+    #categoryy{
+        width: 100%;
+    }
+    #categoryy #categoryName, #categoryy #con ,
+    #categoryy #upload
+    {
+        width: 98%;
+    }
+    #categoryy #upload{
+        width: 100%;
+    }
+}
+
+@media (min-width:133px) and (max-width: 200px) {
+    #categoryy{
+        width: 100%;
+    }
+    #categoryy #categoryName, #categoryy #con ,
+    #categoryy #upload
+    {
+        width: 98%;
+    }
+    #categoryy #upload{
+        width: 100%;
+    }
+}
+
+@media (min-width:200px) and (max-width: 217px) {
+    #categoryy #upload{
+        width: 100%;
+        font-size: 12px;
+    }
+}
