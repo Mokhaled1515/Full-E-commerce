@@ -15,6 +15,13 @@ import cartRouter from "./route/cart.route.js";
 import addressRouter from "./route/address.route.js";
 import orderRouter from "./route/order.route.js";
 
+
+console.log(
+  "SECRET_KEY_ACCESS_TOKEN exists:",
+  !!process.env.SECRET_KEY_ACCESS_TOKEN
+);
+
+
 const app = express();
 app.use(
   cors({
