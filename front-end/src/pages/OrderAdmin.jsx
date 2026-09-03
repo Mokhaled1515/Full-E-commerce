@@ -33,18 +33,15 @@ const OrderAdmin = () => {
   }, []);
 
   return (
-    <section className="p-4 bg-blue-50 dark:bg-slate-700 min-h-screen">
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4">
-        <h2 className="text-xl font-semibold dark:text-white mb-4">
-          Orders
-        </h2>
+    <section className="p-2 sm:p-4 bg-blue-50 dark:bg-slate-700 min-h-screen overflow-x-hidden">
+      {/* <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4"> */}
+      <div className="w-full min-w-0 bg-white dark:bg-slate-800 rounded-lg shadow-md p-2 sm:p-4">
+        <h2 className="text-xl font-semibold dark:text-white mb-4">Orders</h2>
 
         {loading && <Loading />}
 
         {!loading && orderData.length === 0 && (
-          <p className="text-center py-10 text-gray-500">
-            No orders found
-          </p>
+          <p className="text-center py-10 text-gray-500">No orders found</p>
         )}
 
         <div className="grid gap-4">
@@ -54,33 +51,32 @@ const OrderAdmin = () => {
               className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-slate-900"
             >
               {/* Order information */}
-              <div className="flex flex-col gap-2 mb-4">
-                <p className="font-semibold dark:text-white">
+              {/* <div className="flex flex-col gap-2 mb-4"> */}
+              <div className="flex flex-col gap-2 mb-4 min-w-0">
+                <p className="font-semibold dark:text-white break-words">
                   Order ID:
-                  <span className="font-normal ml-2">
+                  <span className="font-normal ml-2 break-all">
                     {order.orderId}
                   </span>
                 </p>
 
-                <p className="dark:text-white">
+                <p className="dark:text-white break-words">
                   Customer:
-                  <span className="ml-2">
+                  <span className="ml-2 break-words">
                     {order.userId?.name || "Unknown"}
                   </span>
                 </p>
 
-                <p className="dark:text-white">
+                <p className="dark:text-white break-words">
                   Email:
-                  <span className="ml-2">
+                  <span className="ml-2 break-all">
                     {order.userId?.email || "-"}
                   </span>
                 </p>
 
                 <p className="dark:text-white">
                   Mobile:
-                  <span className="ml-2">
-                    {order.userId?.mobile || "-"}
-                  </span>
+                  <span className="ml-2">{order.userId?.mobile || "-"}</span>
                 </p>
               </div>
 
@@ -108,15 +104,13 @@ const OrderAdmin = () => {
 
                   <p className="dark:text-gray-300">
                     Payment:
-                    <span className="ml-2">
-                      {order.payment_status}
-                    </span>
+                    <span className="ml-2">{order.payment_status}</span>
                   </p>
                 </div>
               </div>
 
               {/* Address */}
-              {order.delivery_address && (
+              {/* {order.delivery_address && (
                 <div className="border-t border-gray-200 dark:border-gray-600 mt-4 pt-4">
                   <h3 className="font-semibold dark:text-white mb-2">
                     Delivery Address
@@ -140,7 +134,78 @@ const OrderAdmin = () => {
                     Mobile: {order.delivery_address.mobile}
                   </p>
                 </div>
+              )} */}
+
+
+              
+
+              {/* Delivery Information */}
+              {order.delivery_address && (
+                <div className="border-t border-gray-200 dark:border-gray-600 mt-4 pt-4">
+                  <h3 className="font-semibold dark:text-white mb-3">
+                    Delivery Information
+                  </h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {/* Governorate */}
+                    <p className="dark:text-gray-300 break-words">
+                      Governorate:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.state || "-"}
+                      </span>
+                    </p>
+
+                    {/* Country */}
+                    <p className="dark:text-gray-300 break-words">
+                      Country:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.country || "-"}
+                      </span>
+                    </p>
+
+                    {/* City */}
+                    <p className="dark:text-gray-300 break-words">
+                      City:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.city || "-"}
+                      </span>
+                    </p>
+
+                    {/* Pincode */}
+                    <p className="dark:text-gray-300 break-words">
+                      Pincode:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.pincode || "-"}
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Address */}
+                  <div className="mt-3">
+                    <p className="dark:text-gray-300 break-words">
+                      Address:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.address_line || "-"}
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Mobile */}
+                  <div className="mt-2">
+                    <p className="dark:text-gray-300 break-words">
+                      Mobile:
+                      <span className="ml-2 font-medium text-gray-900 dark:text-white">
+                        {order.delivery_address.mobile || "-"}
+                      </span>
+                    </p>
+                  </div>
+                </div>
               )}
+
+
+
+
+
             </div>
           ))}
         </div>
