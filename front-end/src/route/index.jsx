@@ -142,6 +142,10 @@ const router = createBrowserRouter([
         path: "cancel",
         element: <Cancel />,
       },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
     ],
   },
 ]);
