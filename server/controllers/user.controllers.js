@@ -171,38 +171,7 @@ export async function loginController(req, res) {
 }
 
 export async function logOutControllers(req, res) {
-  // try {
-  //   const userid = req.userId;
-  //   const cookieOptionn = {
-  //     httpOnly: true,
-  //     secure: true,
-  //     sameSite: "None",
-  //   };
-  //   res.clearCookie("accesstoken", cookieOptionn);
-  //   res.clearCookie("refreshTooken", cookieOptionn);
-
-  //   const removeRefreshToken = await UserModel.findByIdAndUpdate(userid, {
-  //     refresh_token: "",
-  //   });
-
-  //   res.json({
-  //     message: "Logout Successfully",
-  //     error: false,
-  //     success: true,
-  //   });
-   
-  //   return res.status(200).json({
-  //     message: "Logout Successfuly",
-      
-  //   })
-  // } catch (error) {
-  //   return res.status(500).json({
-      
-  //     message: error.message || error,
-  //     error: true,
-  //     success: false,
-  //   });
-  // }
+ 
   try {
     const userid = req.userId
     const cookiesOptionn = {

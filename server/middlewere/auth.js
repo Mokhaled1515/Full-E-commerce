@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 const auth = async (req, res, next) => {
   try {
     const token =
-      req.cookies.accesstoken || req?.headers?.authorization?.split(" ")[1]
+      req.cookies?.accesstoken || req?.headers?.authorization?.split(" ")[1]
     if (!token) {
       return res.status(401).json({
         message: "provide token",
@@ -19,9 +19,9 @@ const auth = async (req, res, next) => {
     req.userId = decode.id;
     next();
   } catch (error) {
-    return res.status(500).json({
+    return res.status(401).json({
       // message: error.message || error,
-      message : "you have not Login",
+      message : "Not authenticated!",
       error: true,
       success: false,
     });

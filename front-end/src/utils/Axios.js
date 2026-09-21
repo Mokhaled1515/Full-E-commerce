@@ -7,10 +7,6 @@ const Axios = axios.create({
 });
 
 
-
-
-
-
 Axios.interceptors.request.use(
   async (config) => {
     const accesToken = localStorage.getItem("accesstoken");
